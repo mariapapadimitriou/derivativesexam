@@ -783,7 +783,6 @@ function appendSessionHistory(prefix) {
       </tr>`;
   sessions.slice(0, 10).forEach((s, i) => {
     const col = s.pct >= 75 ? '#4ade80' : s.pct >= 50 ? '#facc15' : '#f87171';
-    const bar = Math.round(s.pct / 5); // 0-20 chars
     html += `<tr style="border-bottom:1px solid #ffffff08;${i===0?'background:#ffffff05':''}">
       <td style="padding:7px 10px;color:#94a3b8">${s.date}</td>
       <td style="padding:7px 10px;color:#64748b">${s.time||''}</td>
@@ -852,31 +851,49 @@ window.s2skip = function() {
   const sections    = document.querySelectorAll('.notes-section');
   const content     = document.getElementById('notes-content');
 
+  // Returns the active scroll container (desktop: notes-content, mobile: window)
+  function scrollEl() {
+    return content.offsetHeight < content.scrollHeight ? content : window;
+  }
+
   // Smooth scroll from sidebar nav links
   navItems.forEach(item => {
     item.addEventListener('click', e => {
       e.preventDefault();
       const target = document.querySelector(item.getAttribute('href'));
-      if (target && content) {
-        content.scrollTo({ top: target.offsetTop - 20, behavior: 'smooth' });
+      if (!target || !content) return;
+      const scroller = scrollEl();
+      if (scroller === window) {
+        const top = target.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top, behavior: 'smooth' });
+      } else {
+        const top = target.getBoundingClientRect().top
+                  - content.getBoundingClientRect().top
+                  + content.scrollTop - 20;
+        content.scrollTo({ top, behavior: 'smooth' });
       }
     });
   });
 
   // Scroll spy — highlight active nav item
+  function runSpy() {
+    const scroller = scrollEl();
+    const scrollTop = scroller === window ? window.scrollY : content.scrollTop;
+    const offset    = scroller === window ? 100 : 80;
+    let current = sections.length ? sections[0].id : '';
+    sections.forEach(sec => {
+      if (sec.getBoundingClientRect().top <= offset) current = sec.id;
+    });
+    navItems.forEach(item => {
+      item.classList.toggle('active', item.getAttribute('href') === '#' + current);
+    });
+  }
   if (content) {
-    content.addEventListener('scroll', () => {
-      let current = '';
-      sections.forEach(sec => {
-        if (sec.offsetTop - 80 <= content.scrollTop) current = sec.id;
-      });
-      if (!current && sections.length) current = sections[0].id;
-      navItems.forEach(item => {
-        item.classList.toggle('active', item.getAttribute('href') === '#' + current);
-      });
+    content.addEventListener('scroll', runSpy, { passive: true });
+    window.addEventListener('scroll', () => {
+      if (document.getElementById('site3').classList.contains('active')) runSpy();
     }, { passive: true });
-    // Trigger once on load
-    content.dispatchEvent(new Event('scroll'));
+    runSpy();
   }
 
   // Live search — highlight matching text and jump to first result
