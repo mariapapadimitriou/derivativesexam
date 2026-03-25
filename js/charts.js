@@ -1,4 +1,4 @@
-(function initPayoffCharts() {
+window.initPayoffCharts = function() {
   if (typeof Chart === 'undefined') return;
 
   const DARK   = '#0a1628';
@@ -167,4 +167,4 @@
     [ds(P.map(s => -(Math.max(s-105,0)+Math.max(95-s,0))+6), RED, 'Short Strangle')],
     lbl
   );
-})();
+};

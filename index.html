@@ -305,10 +305,12 @@
 
 <!-- ══ SITE 3: NOTES ══════════════════════════════════════════════ -->
 <div class="site-container" id="site3">
+<div class="notes-sidebar-backdrop" id="notes-backdrop"></div>
 <div class="notes-layout">
 
   <!-- Sidebar -->
   <nav class="notes-sidebar" id="notes-sidebar">
+    <button class="notes-mob-close" id="notes-mob-close" aria-label="Close menu">✕</button>
     <div class="notes-search-wrap">
       <input class="notes-search" id="notes-search" type="text" placeholder="🔍  Search notes…" autocomplete="off">
     </div>
@@ -322,18 +324,21 @@
       <a class="notes-nav-item" href="#n-e6">El. 6 — Strategies & Hedging</a>
       <a class="notes-nav-item" href="#n-e7">El. 7 — Market Integrity</a>
       <a class="notes-nav-item" href="#n-e8">El. 8 — Standards of Conduct</a>
-      <a class="notes-nav-item" href="#n-addendum">📎 Exam Topic Addendum</a>
+      <a class="notes-nav-item" href="#n-guide">📘 Study Guide</a>
       <a class="notes-nav-item" href="#n-formulas">∑ All Formulas</a>
     </div>
   </nav>
 
   <!-- Main content -->
   <div class="notes-content" id="notes-content">
+    <button class="notes-mob-toggle" id="notes-mob-toggle" aria-label="Open navigation">
+      ☰ &nbsp;Jump to section
+    </button>
 
     <!-- ── OVERVIEW ─────────────────────────────────────────────── -->
     <section class="notes-section" id="n-overview">
       <h1 class="n-h1">CIRO Derivatives Exam — Study Notes</h1>
-      <p class="n-meta">Calibri · Beginner-friendly · All 8 elements · Addendum included</p>
+      <p class="n-meta">Beginner-friendly · All 8 elements · Study guide included</p>
 
       <div class="n-exam-grid">
         <div class="n-exam-card"><div class="n-exam-num">120</div><div class="n-exam-label">Questions</div></div>
@@ -944,18 +949,152 @@
     </section>
 
     <!-- ── ADDENDUM ────────────────────────────────────────────────── -->
-    <section class="notes-section" id="n-addendum">
-      <h1 class="n-h1">📎 Exam Topic Addendum</h1>
-      <p class="n-meta">40 topics found in the practice exam but missing from the original notes</p>
-      <div class="n-callout">All content from the addendum is already integrated into the relevant element sections above. This section is a quick-reference summary of what was added.</div>
+    <!-- ── STUDY GUIDE ────────────────────────────────────────── -->
+    <section class="notes-section" id="n-guide">
+      <h1 class="n-h1">📘 How to Study for This Exam</h1>
+      <p class="n-meta">Based on the official CIRO Derivatives Exam Guide for Studying</p>
 
-      <table class="n-table"><thead><tr><th>Element</th><th>Topics Added</th></tr></thead><tbody>
-        <tr><td>El. 2</td><td>Concentration capital requirements; OEO OTC retail disclosure (quarterly profitability).</td></tr>
-        <tr><td>El. 3</td><td>Contango &amp; backwardation; Bond futures &amp; duration hedging; Variance swaps; Principal-protected notes (zero-coupon + call option structure).</td></tr>
-        <tr><td>El. 4</td><td>Interest rate parity &amp; forward exchange rates; Reverse cash-and-carry arbitrage; Basis risk; Technical analysis detail (moving averages, RSI, Fibonacci, Bollinger Bands, COT); Blended fundamental-technical forecasting; Tax: professional vs non-professional frequency indicators.</td></tr>
-        <tr><td>El. 5</td><td>Order designations (NCIB, jitney, SME, program trade, principal); Direct electronic access (DEA); Guaranty fund default waterfall; CDS delivery procedures &amp; buy-in notices; Fractional share cash settlement.</td></tr>
-        <tr><td>El. 6</td><td>Beta hedging formula (with example); Calendar spread mechanics (bull vs bear); Delta hedging rebalancing and gamma risk; Weather derivatives (HDD/CDD strategy matching).</td></tr>
-      </tbody></table>
+      <div class="n-callout">The exam syllabus is the authoritative list of what can be tested — you will not be tested on any topic not explicitly mentioned in it. All content is freely available through public websites, regulatory rule books and national/regional laws. CIRO does not produce a consolidated study book for this exam.</div>
+
+      <h2 class="n-h2">Self-Study: Step-by-Step</h2>
+
+      <h3 class="n-h3">1. Understand the Scope</h3>
+      <ul class="n-ul">
+        <li>Carefully review the learning outcomes to understand the breadth and depth of exam content.</li>
+        <li>Understand question types indicated by the taxonomy: <strong>Remember</strong> → <strong>Understand</strong> → <strong>Apply</strong> → <strong>Analyze</strong>. Each level is cumulative.</li>
+        <li>Group similar or related outcomes together to create an organised study plan.</li>
+      </ul>
+
+      <h3 class="n-h3">2. Create a Study Schedule</h3>
+      <ul class="n-ul">
+        <li>Allocate specific times for each learning outcome, ensuring you cover all material.</li>
+        <li>Use the question weighting to guide time allocation — e.g. roughly one hour per exam question.</li>
+        <li>Set realistic goals, allowing for review and practice before the exam date.</li>
+      </ul>
+
+      <h3 class="n-h3">3. Identify Key Concepts</h3>
+      <ul class="n-ul">
+        <li>For each learning outcome, identify the key concepts and terms you need to master.</li>
+        <li>Make a list of key points for quick reference and revision.</li>
+        <li>Create a mind map plotting out what you'll need to know for each area.</li>
+      </ul>
+
+      <h3 class="n-h3">4. Use Supplementary Materials</h3>
+      <ul class="n-ul">
+        <li>Use textbooks, online resources, industry publications and peers to deepen understanding.</li>
+        <li>For non-regulatory content (financial markets), university course reading lists are a good source.</li>
+      </ul>
+
+      <h3 class="n-h3">5. Employ the Practice Exam</h3>
+      <ul class="n-ul">
+        <li>The practice exam is a real representation of the type and breadth of questions you will see.</li>
+        <li>Use it informally early to build familiarity, then formally when you feel ready for the actual exam.</li>
+        <li>Do not memorise specific practice exam questions — use it to assess readiness and test your pacing.</li>
+      </ul>
+
+      <h3 class="n-h3">6. Use Active Learning Techniques</h3>
+      <ul class="n-ul">
+        <li>Summarise information in your own words, create mind maps, use flashcards, discuss with peers.</li>
+        <li>Teach the material to someone else to reinforce your understanding.</li>
+        <li>The more active you are, the better you will retain the content.</li>
+      </ul>
+
+      <h3 class="n-h3">7. Do Regular Self-Assessment</h3>
+      <ul class="n-ul">
+        <li>Periodically test yourself on each learning outcome to gauge understanding and retention.</li>
+        <li>Adjust your study plan based on self-assessments, focusing more on weaker areas.</li>
+      </ul>
+
+      <h3 class="n-h3">8. Join Study Groups &amp; Stay Updated</h3>
+      <ul class="n-ul">
+        <li>Consider study groups or online forums where you can discuss outcomes and share resources.</li>
+        <li>Keep abreast of any updates or changes in the investment industry that might impact the exam.</li>
+      </ul>
+
+      <h2 class="n-h2">Prep Provider vs Self-Study</h2>
+      <table class="n-table">
+        <thead><tr><th>Aspect</th><th>Prep Provider</th><th>Self-Study</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Structure</strong></td><td>Structured plan, systematic coverage</td><td>You build your own plan; risk of gaps</td></tr>
+          <tr><td><strong>Guidance</strong></td><td>Expert instructors for complex topics</td><td>No expert; rely on public resources</td></tr>
+          <tr><td><strong>Resources</strong></td><td>Textbooks, modules, practice exams</td><td>Free/low-cost — library, web, forums</td></tr>
+          <tr><td><strong>Flexibility</strong></td><td>May require a set schedule</td><td>Study at your own pace</td></tr>
+          <tr><td><strong>Cost</strong></td><td>Can be expensive</td><td>Generally low cost</td></tr>
+          <tr><td><strong>Peer interaction</strong></td><td>Study groups and forums included</td><td>Must find groups independently</td></tr>
+          <tr><td><strong>Accountability</strong></td><td>Provider keeps you on track</td><td>High self-discipline required</td></tr>
+          <tr><td><strong>Independence</strong></td><td>Risk of over-reliance on provider</td><td>Builds strong independent study habits</td></tr>
+        </tbody>
+      </table>
+      <div class="n-callout">CIRO does not endorse any prep provider and does not guarantee passing the exam using any method. If there is a discrepancy between a provider's material and CIRO's information, always refer to the CIRO rules, guidance and syllabus.</div>
+
+      <h2 class="n-h2">Key Regulatory References</h2>
+
+      <h3 class="n-h3">IDPC Rules — Investment Dealer &amp; Partially Consolidated</h3>
+      <p class="n-p">These rules govern the activities of Investment Dealers and are hosted on the CIRO website (ciro.ca). Key sections for this exam:</p>
+      <ul class="n-ul">
+        <li><strong>Rule 1100</strong> — Interpretation</li>
+        <li><strong>Rule 1200</strong> — Definitions</li>
+        <li><strong>Rule 1400</strong> — Standards of conduct</li>
+        <li><strong>Rule 1500</strong> — Managing significant areas of risk</li>
+        <li><strong>Rule 2600</strong> — Proficiency requirements and exemptions from proficiencies</li>
+        <li><strong>Rule 3100</strong> — Dealing with clients</li>
+        <li><strong>Rule 3200</strong> — Know-your-client and client accounts
+          <ul>
+            <li>Part A — KYC and client identification requirements</li>
+            <li>Part B — Requirements for client accounts</li>
+            <li>Part F — Additional account opening and updating procedures for derivatives trading</li>
+          </ul>
+        </li>
+        <li><strong>Rule 3300</strong> — Product due diligence and know-your-product</li>
+        <li><strong>Rule 3400</strong> — Suitability determination</li>
+        <li><strong>Rule 3600</strong> — Communications with the public
+          <ul>
+            <li>Part A — Advertisements, sales literature and correspondence</li>
+            <li>Part C — Misleading communications</li>
+          </ul>
+        </li>
+        <li><strong>Rule 3800</strong> — Dealer member records and client communications</li>
+        <li><strong>Rule 3900</strong> — Supervision
+          <ul>
+            <li>Part C — Supervision of retail client accounts</li>
+            <li>Part D — Supervision of institutional client accounts</li>
+            <li>Part F — Supervision of derivatives accounts</li>
+          </ul>
+        </li>
+      </ul>
+
+      <h3 class="n-h3">Universal Market Integrity Rules (UMIR)</h3>
+      <p class="n-p">Also hosted on ciro.ca. Key sections:</p>
+      <ul class="n-ul">
+        <li><strong>Part 1</strong> — Definitions and interpretation</li>
+        <li><strong>Part 2</strong> — Abusive trading</li>
+        <li><strong>Part 4</strong> — Frontrunning</li>
+        <li><strong>Part 10</strong> — Gatekeeper obligations</li>
+      </ul>
+
+      <div class="n-callout"><strong>NI 93-101</strong> — Derivatives: Business Conduct. Found on the CSA website (securities-administrators.ca). The exam focuses on the purpose, general requirements and implications of breaching these rules. The <strong>Montréal Exchange</strong> (m-x.ca/en) is the primary derivatives exchange in Canada — its rules and information are relevant to the exam.</div>
+
+      <h3 class="n-h3">Regulatory &amp; Government Bodies</h3>
+      <table class="n-table">
+        <thead><tr><th>Body</th><th>Website</th><th>What to find there</th></tr></thead>
+        <tbody>
+          <tr><td><strong>CIRO</strong></td><td>ciro.ca</td><td>IDPC Rules, UMIR, guidance on markets, participants and investor information</td></tr>
+          <tr><td><strong>CSA</strong></td><td>securities-administrators.ca</td><td>National Instruments (incl. NI 93-101), provincial/territorial securities regulation</td></tr>
+          <tr><td><strong>OSFI</strong></td><td>osfi-bsif.gc.ca</td><td>Regulation and supervision of financial institutions and pension plans</td></tr>
+          <tr><td><strong>FCAC</strong></td><td>fcac-acfc.gc.ca</td><td>Consumer rights, financial education, regulation of financial products and services</td></tr>
+          <tr><td><strong>Bank of Canada</strong></td><td>bankofcanada.ca</td><td>Monetary policy, financial system stability, financial markets research</td></tr>
+          <tr><td><strong>Government of Canada</strong></td><td>canada.ca</td><td>Investment industry regulations and consumer protection</td></tr>
+          <tr><td><strong>Montréal Exchange</strong></td><td>m-x.ca/en</td><td>Canadian derivatives exchange — rules, products, and market information</td></tr>
+        </tbody>
+      </table>
+
+      <h2 class="n-h2">Academic &amp; Topical Learning Programs</h2>
+      <p class="n-p">Canada has a strong ecosystem of local and national providers of courses and digital education for the investment and finance industries — many available through colleges and universities including degree, certificate and executive education programs.</p>
+      <p class="n-p">If engaging with a provider, look for programs covering:</p>
+      <ul class="n-ul">
+        <li><strong>Derivatives and/or options</strong> — technical and procedural aspects of derivative products, including features, risks and benefits, as well as pricing and trading processes.</li>
+      </ul>
+      <div class="n-callout">Also review the education and experience requirements in <strong>IDPC Rule 2600</strong>, applicable for some Approved Person categories. CIRO does not recommend or endorse specific providers — selecting a provider is the candidate's responsibility.</div>
     </section>
 
     <!-- ── FORMULAS ────────────────────────────────────────────────── -->

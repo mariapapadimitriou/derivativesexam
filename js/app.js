@@ -398,6 +398,7 @@ document.querySelectorAll('.site-tab').forEach(tab => {
     tab.classList.add('active');
     document.getElementById(target).classList.add('active');
     window.scrollTo(0, 0);
+    if (target === 'site3') window.initPayoffCharts && window.initPayoffCharts();
   });
 });
 
@@ -1193,3 +1194,31 @@ document.getElementById('m-btn-back-results').addEventListener('click', () => go
 renderStats('s1', 120);
 renderStats('s2', 80);
 mathRenderStats();
+
+// ── Table scroll wrappers ─────────────────────────────────────────────────
+document.querySelectorAll('.n-table').forEach(t => {
+  if (t.parentElement.classList.contains('n-table-wrap')) return;
+  const w = document.createElement('div');
+  w.className = 'n-table-wrap';
+  t.parentNode.insertBefore(w, t);
+  w.appendChild(t);
+});
+
+// ── Notes sidebar mobile drawer ───────────────────────────────────────────
+(function() {
+  const sidebar   = document.getElementById('notes-sidebar');
+  const backdrop  = document.getElementById('notes-backdrop');
+  const openBtn   = document.getElementById('notes-mob-toggle');
+  const closeBtn  = document.getElementById('notes-mob-close');
+  if (!sidebar || !openBtn) return;
+
+  function openDrawer()  { sidebar.classList.add('mob-open'); backdrop.classList.add('mob-open'); document.body.style.overflow = 'hidden'; }
+  function closeDrawer() { sidebar.classList.remove('mob-open'); backdrop.classList.remove('mob-open'); document.body.style.overflow = ''; }
+
+  openBtn.addEventListener('click', openDrawer);
+  closeBtn.addEventListener('click', closeDrawer);
+  backdrop.addEventListener('click', closeDrawer);
+
+  // Close drawer when a nav link is tapped
+  sidebar.querySelectorAll('.notes-nav-item').forEach(a => a.addEventListener('click', closeDrawer));
+})();
