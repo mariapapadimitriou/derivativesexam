@@ -442,6 +442,20 @@
   }
   .btn-skip:hover { color: #94a3b8; }
 
+  .btn-prev {
+    background: none;
+    border: 1px solid #ffffff18;
+    color: #64748b;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.83rem;
+    cursor: pointer;
+    padding: 9px 14px;
+    border-radius: 8px;
+    transition: color 0.2s, border-color 0.2s;
+    min-height: 44px;
+  }
+  .btn-prev:hover { color: #94a3b8; border-color: #ffffff30; }
+
   .score-mini {
     font-family: 'DM Mono', monospace;
     font-size: 0.8rem;
@@ -573,7 +587,7 @@
   .eb-label {
     font-size: 0.78rem;
     color: #64748b;
-    width: 180px;
+    width: 160px;
     flex-shrink: 0;
   }
   .eb-bar-wrap {
@@ -596,6 +610,16 @@
     width: 36px;
     text-align: right;
   }
+  .eb-counts {
+    display: flex;
+    gap: 7px;
+    flex-shrink: 0;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+  }
+  .eb-c { color: #4ade80; }
+  .eb-w { color: #f87171; }
+  .eb-s { color: #93c5fd; }
 
   /* ── REVIEW MODE ─────────────────────────────────────────────── */
   .review-list { margin-top: 48px; display: flex; flex-direction: column; gap: 20px; }
@@ -1105,7 +1129,8 @@ body { padding-bottom: env(safe-area-inset-bottom); }
   .n-h1 { font-size: 1.5rem; }
   .n-chart { max-width: 100%; }
   .math-formula-hint { font-size: 0.72rem; }
-  .eb-label { width: 140px !important; font-size: 0.7rem !important; }
+  .eb-label { width: 120px !important; font-size: 0.7rem !important; }
+  .eb-counts { gap: 5px !important; font-size: 0.65rem !important; }
 
   /* Quiz layout */
   main { padding: 20px 14px 0; }

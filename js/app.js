@@ -100,6 +100,16 @@ function renderQuestion() {
   card.style.animation = '';
 
   state.answered = false;
+
+  // Prev button visibility
+  document.getElementById('s1-btn-prev').style.display = state.idx > 0 ? 'inline-flex' : 'none';
+  // Always show skip when rendering fresh
+  document.getElementById('s1-btn-skip').style.display = '';
+
+  // If navigating back into an already-answered question, restore its state
+  if (state.idx < state.results.length) {
+    restoreS1AnswerState();
+  }
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -173,6 +183,13 @@ function showFeedback(isCorrect, q, selected) {
     fbResult.textContent = 'Correct!';
     fbBody.textContent = q.explanation;
     fbCorrect.style.display = 'none';
+  } else if (selected === null) {
+    panel.className = 'feedback-panel wrong-fb';
+    fbIcon.textContent = '↷';
+    fbResult.textContent = 'Skipped';
+    fbBody.textContent = '';
+    fbCorrect.style.display = 'block';
+    fbCorrectText.textContent = `${q.answer}: ${q.options[q.answer]} — ${q.explanation}`;
   } else {
     panel.className = 'feedback-panel wrong-fb';
     fbIcon.textContent = '✗';
@@ -188,6 +205,29 @@ function showFeedback(isCorrect, q, selected) {
     fbCorrect.style.display = 'block';
     fbCorrectText.textContent = `${q.answer}: ${q.options[q.answer]} — ${q.explanation}`;
   }
+}
+
+function restoreS1AnswerState() {
+  const r = state.results[state.idx];
+  if (!r) return;
+  state.answered = true;
+  const q = state.deck[state.idx];
+  document.querySelectorAll('#s1-options-list .option-btn').forEach(btn => {
+    btn.disabled = true;
+    const k = btn.dataset.key;
+    if (k === q.answer) btn.classList.add('correct');
+    else if (k === r.userAnswer && !r.wasCorrect) btn.classList.add('wrong');
+    else btn.classList.add('dimmed');
+  });
+  showFeedback(r.wasCorrect, q, r.userAnswer);
+  document.getElementById('s1-btn-next').classList.add('visible');
+  document.getElementById('s1-btn-skip').style.display = 'none';
+}
+
+function prevQuestion() {
+  if (state.idx === 0) return;
+  state.idx--;
+  renderQuestion();
 }
 
 // ══════════════════════════════════════════════════════════════════
@@ -250,19 +290,6 @@ function showResults() {
     pct >= 75 ? 'Well Done!' : pct >= 50 ? 'Good Effort' : 'Keep Studying';
   document.getElementById('s1-result-sub').textContent = getMessageForScore(pct);
 
-  // Element breakdown
-  const elMap = {};
-  OFFICIAL_QUESTIONS.forEach(q => {
-    if (!elMap[q.element]) elMap[q.element] = { label: `Element ${q.element}`, total: 0, correct: 0 };
-    elMap[q.element].total++;
-  });
-  state.results.forEach(r => {
-    const q = OFFICIAL_QUESTIONS.find(q => q.id === r.qid);
-    if (q && elMap[q.element]) {
-      if (r.wasCorrect) elMap[q.element].correct++;
-    }
-  });
-
   const ELEMENT_NAMES = {
     1:'The Client Relationship', 2:'Regulatory Documentation',
     3:'Types & Features', 4:'Derivative Pricing',
@@ -275,9 +302,11 @@ function showResults() {
   state.results.forEach(r => {
     const q = OFFICIAL_QUESTIONS.find(q => q.id === r.qid);
     if (q) {
-      if (!answeredEls[q.element]) answeredEls[q.element] = { correct: 0, total: 0 };
+      if (!answeredEls[q.element]) answeredEls[q.element] = { correct: 0, wrong: 0, skipped: 0, total: 0 };
       answeredEls[q.element].total++;
       if (r.wasCorrect) answeredEls[q.element].correct++;
+      else if (r.userAnswer === null) answeredEls[q.element].skipped++;
+      else answeredEls[q.element].wrong++;
     }
   });
 
@@ -286,6 +315,7 @@ function showResults() {
       const p = data.total ? Math.round(data.correct/data.total*100) : 0;
       return `<div class="eb-row">
         <div class="eb-label">El. ${el} – ${ELEMENT_NAMES[el]||''}</div>
+        <div class="eb-counts"><span class="eb-c">✓${data.correct}</span><span class="eb-w">✗${data.wrong}</span><span class="eb-s">↷${data.skipped}</span></div>
         <div class="eb-bar-wrap"><div class="eb-bar-fill" style="width:${p}%;background:${p>=75?'#4ade80':p>=50?'#facc15':'#f87171'}"></div></div>
         <div class="eb-pct">${p}%</div>
       </div>`;
@@ -355,6 +385,7 @@ document.querySelectorAll('#s1-mode-picker .mode-btn').forEach(btn => {
 document.getElementById('s1-btn-start').addEventListener('click', startQuiz);
 document.getElementById('s1-btn-next').addEventListener('click', nextQuestion);
 document.getElementById('s1-btn-skip').addEventListener('click', skipQuestion);
+document.getElementById('s1-btn-prev').addEventListener('click', prevQuestion);
 
 document.getElementById('s1-btn-retry').addEventListener('click', () => {
   document.getElementById('s1-screen-results').style.display = 'none';
@@ -460,6 +491,10 @@ function s2render() {
   const card=document.getElementById('s2-question-card');
   card.style.animation='none'; card.offsetHeight; card.style.animation='';
   s2.answered=false;
+
+  document.getElementById('s2-btn-prev').style.display = s2.idx > 0 ? 'inline-flex' : 'none';
+  document.getElementById('s2-btn-skip').style.display = '';
+  if (s2.idx < s2.results.length) { s2restoreAnswerState(); }
 }
 
 function s2answer(selected) {
@@ -502,6 +537,52 @@ function s2answer(selected) {
   document.getElementById('s2-live-score').textContent=`✓ ${s2.correct}   ✗ ${s2.wrong}`;
 }
 
+function s2restoreAnswerState() {
+  const r = s2.results[s2.idx];
+  if (!r) return;
+  s2.answered = true;
+  const q = s2.deck[s2.idx];
+  document.querySelectorAll('#s2-options-list .option-btn').forEach(btn => {
+    btn.disabled = true;
+    const k = btn.dataset.key;
+    if (k === q.answer) btn.classList.add('correct');
+    else if (k === r.userAnswer && !r.wasCorrect) btn.classList.add('wrong');
+    else btn.classList.add('dimmed');
+  });
+  const panel=document.getElementById('s2-feedback-panel');
+  const fbIcon=document.getElementById('s2-fb-icon');
+  const fbResult=document.getElementById('s2-fb-result');
+  const fbBody=document.getElementById('s2-fb-body');
+  const fbCorrect=document.getElementById('s2-fb-correct-answer');
+  const fbCorrectText=document.getElementById('s2-fb-correct-text');
+  panel.style.display='block';
+  if (r.wasCorrect) {
+    panel.className='feedback-panel correct-fb';
+    fbIcon.textContent='✓'; fbResult.textContent='Correct!';
+    fbBody.textContent=q.explanation; fbCorrect.style.display='none';
+  } else if (r.userAnswer === null) {
+    panel.className='feedback-panel wrong-fb';
+    fbIcon.textContent='↷'; fbResult.textContent='Skipped';
+    fbBody.textContent=''; fbCorrect.style.display='block';
+    fbCorrectText.textContent=`${q.answer}: ${q.options[q.answer]} — ${q.explanation}`;
+  } else {
+    panel.className='feedback-panel wrong-fb';
+    fbIcon.textContent='✗'; fbResult.textContent='Not quite.';
+    const wrongExp=q.wrongExplanations?.[r.userAnswer];
+    fbBody.textContent=wrongExp?`Why ${r.userAnswer} is wrong: ${wrongExp}`:`The correct answer is ${q.answer}.`;
+    fbCorrect.style.display='block';
+    fbCorrectText.textContent=`${q.answer}: ${q.options[q.answer]} — ${q.explanation}`;
+  }
+  document.getElementById('s2-btn-next').classList.add('visible');
+  document.getElementById('s2-btn-skip').style.display='none';
+}
+
+function s2prev() {
+  if (s2.idx === 0) return;
+  s2.idx--;
+  s2render();
+}
+
 function s2next() {
   s2.idx++;
   if(s2.idx>=s2.deck.length)s2results();
@@ -542,13 +623,18 @@ function s2results() {
   const answeredEls={};
   s2.results.forEach(r=>{
     const q=NOTES_QUESTIONS.find(q=>q.id===r.qid);
-    if(q){if(!answeredEls[q.element])answeredEls[q.element]={correct:0,total:0};
-    answeredEls[q.element].total++;if(r.wasCorrect)answeredEls[q.element].correct++;}
+    if(q){
+      if(!answeredEls[q.element])answeredEls[q.element]={correct:0,wrong:0,skipped:0,total:0};
+      answeredEls[q.element].total++;
+      if(r.wasCorrect)answeredEls[q.element].correct++;
+      else if(r.userAnswer===null)answeredEls[q.element].skipped++;
+      else answeredEls[q.element].wrong++;
+    }
   });
   document.getElementById('s2-element-breakdown').innerHTML=`<div class="eb-title">Performance by Element</div>`+
     Object.entries(answeredEls).sort((a,b)=>+a[0]-+b[0]).map(([el,data])=>{
       const p=data.total?Math.round(data.correct/data.total*100):0;
-      return `<div class="eb-row"><div class="eb-label">El. ${el} – ${ELEMENT_NAMES_S2[el]||''}</div><div class="eb-bar-wrap"><div class="eb-bar-fill" style="width:${p}%;background:${p>=75?'#4ade80':p>=50?'#facc15':'#f87171'}"></div></div><div class="eb-pct">${p}%</div></div>`;
+      return `<div class="eb-row"><div class="eb-label">El. ${el} – ${ELEMENT_NAMES_S2[el]||''}</div><div class="eb-counts"><span class="eb-c">✓${data.correct}</span><span class="eb-w">✗${data.wrong}</span><span class="eb-s">↷${data.skipped}</span></div><div class="eb-bar-wrap"><div class="eb-bar-fill" style="width:${p}%;background:${p>=75?'#4ade80':p>=50?'#facc15':'#f87171'}"></div></div><div class="eb-pct">${p}%</div></div>`;
     }).join('');
 }
 
@@ -573,6 +659,7 @@ document.querySelectorAll('#s2-mode-picker .mode-btn').forEach(btn=>{
 document.getElementById('s2-btn-start').addEventListener('click',s2startQuiz);
 document.getElementById('s2-btn-next').addEventListener('click',s2next);
 document.getElementById('s2-btn-skip').addEventListener('click',s2skip);
+document.getElementById('s2-btn-prev').addEventListener('click',s2prev);
 document.getElementById('s2-btn-retry').addEventListener('click',()=>{
   document.getElementById('s2-screen-results').style.display='none';
   document.getElementById('s2-screen-start').style.display='block';
@@ -607,12 +694,14 @@ document.addEventListener('keydown', e => {
     if (!screen || screen.style.display === 'none') return;
     if (['a','b','c','d'].includes(e.key.toLowerCase()) && !state.answered) handleAnswer(e.key.toUpperCase());
     if ((e.key === 'Enter' || e.key === 'ArrowRight') && state.answered) nextQuestion();
+    if (e.key === 'ArrowLeft') prevQuestion();
     if (e.key === 's' && !state.answered) skipQuestion();
   } else {
     const screen = document.getElementById('s2-screen-quiz');
     if (!screen || screen.style.display === 'none') return;
     if (['a','b','c','d'].includes(e.key.toLowerCase()) && !s2.answered) s2answer(e.key.toUpperCase());
     if ((e.key === 'Enter' || e.key === 'ArrowRight') && s2.answered) s2next();
+    if (e.key === 'ArrowLeft') s2prev();
     if (e.key === 's' && !s2.answered) s2skip();
   }
 });
@@ -878,8 +967,7 @@ window.s2skip = function() {
   // Scroll spy — highlight active nav item
   function runSpy() {
     const scroller = scrollEl();
-    const scrollTop = scroller === window ? window.scrollY : content.scrollTop;
-    const offset    = scroller === window ? 100 : 80;
+    const offset   = scroller === window ? 100 : 80;
     let current = sections.length ? sections[0].id : '';
     sections.forEach(sec => {
       if (sec.getBoundingClientRect().top <= offset) current = sec.id;
